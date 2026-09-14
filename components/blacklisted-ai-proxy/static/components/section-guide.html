@@ -1,0 +1,218 @@
+<link rel="stylesheet" href="components/section-guide.css">
+<!-- Guide Section -->
+<section id="guide" class="section" aria-labelledby="guide-title">
+    <h2 id="guide-title" data-i18n="guide.title">User Guide</h2>
+    
+    <!-- Project Introduction -->
+    <div class="guide-panel">
+        <h3><i class="fas fa-info-circle"></i> <span data-i18n="guide.intro.title">Project Introduction</span></h3>
+        <div class="guide-content">
+            <p data-i18n="guide.intro.desc">BlacklistedAPI is an API proxy service that breaks through client limitations, converting free large models like Gemini, Antigravity, Qwen Code, Kiro that were originally only available within clients into standard OpenAI-compatible APIs that any application can call.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-plug"></i></div>
+                    <h4 data-i18n="guide.intro.feature1.title">Unified Access</h4>
+                    <p data-i18n="guide.intro.feature1.desc">Access multiple large models with a single configuration through the standard OpenAI-compatible protocol</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                    <h4 data-i18n="guide.intro.feature2.title">Break Through Limitations</h4>
+                    <p data-i18n="guide.intro.feature2.desc">Legitimately bypass free API rate and quota limits using OAuth authorization mechanism</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-exchange-alt"></i></div>
+                    <h4 data-i18n="guide.intro.feature3.title">Protocol Conversion</h4>
+                    <p data-i18n="guide.intro.feature3.desc">Supports intelligent conversion between OpenAI, Claude, and Gemini protocols</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-server"></i></div>
+                    <h4 data-i18n="guide.intro.feature4.title">Account Pool Management</h4>
+                    <p data-i18n="guide.intro.feature4.desc">Supports multi-account round-robin, automatic failover, and configuration degradation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Flow Chart -->
+    <div class="guide-panel">
+        <h3><i class="fas fa-project-diagram"></i> <span data-i18n="guide.flow.title">Action Flow Chart</span></h3>
+        <div class="guide-content">
+            <div class="process-flow">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4 data-i18n="guide.flow.step1.title">Configuration Management</h4>
+                        <p data-i18n="guide.flow.step1.desc">Set basic parameters in the "Configuration Management" page</p>
+                        <ul>
+                            <li data-i18n="guide.flow.step1.item1">Settings API Key</li>
+                            <li data-i18n="guide.flow.step1.item2">Select model providers to initialize at startup</li>
+                            <li data-i18n="guide.flow.step1.item3">Configure advanced options</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">→</div>
+                
+                <div class="flow-step flow-step-branch">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4 data-i18n="guide.flow.step2.title">Generate Authorization</h4>
+                        <p data-i18n="guide.flow.step2.desc">Generate OAuth authorization on the "Provider Pool Management" page</p>
+                        <div class="branch-options">
+                            <div class="branch-option">
+                                <div class="branch-label" data-i18n="guide.flow.step2.method1">Method 1: OAuth Authorization</div>
+                                <ul>
+                                    <li data-i18n="guide.flow.step2.method1.item1">Click the "Generate Authorization" button</li>
+                                    <li data-i18n="guide.flow.step2.method1.item2">Complete OAuth login in the popup window</li>
+                                    <li data-i18n="guide.flow.step2.method1.item3">Credentials saved automatically</li>
+                                </ul>
+                            </div>
+                            <div class="branch-divider" data-i18n="guide.flow.step2.or">or</div>
+                            <div class="branch-option">
+                                <div class="branch-label" data-i18n="guide.flow.step2.method2">Method 2: Manual Upload</div>
+                                <ul>
+                                    <li data-i18n="guide.flow.step2.method2.item1">Add a new provider node</li>
+                                    <li data-i18n="guide.flow.step2.method2.item2">Upload existing authorization file</li>
+                                    <li data-i18n="guide.flow.step2.method2.item3">Manually associate credential path</li>
+                                </ul>
+                            </div>
+                            <div class="branch-divider" data-i18n="guide.flow.step2.or">or</div>
+                            <div class="branch-option">
+                                <div class="branch-label" data-i18n="guide.flow.step2.method3">Method 3: Connect Provider API</div>
+                                <ul>
+                                    <li data-i18n="guide.flow.step2.method3.item1">Set API Key and endpoint in "Configuration Management"</li>
+                                    <li data-i18n="guide.flow.step2.method3.item2">System automatically detects and connects</li>
+                                    <li data-i18n="guide.flow.step2.method3.item3">No need to manually upload credentials</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">→</div>
+                
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4 data-i18n="guide.flow.step3.title">Manage Credentials</h4>
+                        <p data-i18n="guide.flow.step3.desc">View and manage credentials in the "Credential Files Management" page</p>
+                        <ul>
+                            <li data-i18n="guide.flow.step3.item1">View generated credential files</li>
+                            <li data-i18n="guide.flow.step3.item2">Automatically linked to provider pool</li>
+                            <li data-i18n="guide.flow.step3.item3">Delete invalid credentials</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="flow-arrow">→</div>
+                
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4 data-i18n="guide.flow.step4.title">Start Using</h4>
+                        <p data-i18n="guide.flow.step4.desc">View routing examples on the dashboard and start calling the API</p>
+                        <ul>
+                            <li data-i18n="guide.flow.step4.item1">View routing call examples</li>
+                            <li data-i18n="guide.flow.step4.item2">Copy API endpoint address</li>
+                            <li data-i18n="guide.flow.step4.item3">Configure and use in your client</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Configuration Guide -->
+    <div class="guide-panel">
+        <h3><i class="fas fa-desktop"></i> <span data-i18n="guide.client.title">Client Configuration Guide</span></h3>
+        <div class="guide-content">
+            <p data-i18n="guide.client.desc">Below are configuration methods for common AI clients. Simply set the API endpoint to this service address:</p>
+            
+            <div class="client-config-list">
+                <div class="client-config-item">
+                    <h4><i class="fas fa-cherry"></i> Cherry Studio</h4>
+                    <div class="config-steps">
+                        <ol>
+                            <li data-i18n="guide.client.cherry.step1">Open Settings → Model Service Provider</li>
+                            <li data-i18n="guide.client.cherry.step2">Add custom service provider</li>
+                            <li data-i18n="guide.client.cherry.step3">Set API address to: <code>http://localhost:3000/{provider}/v1</code></li>
+                            <li data-i18n="guide.client.cherry.step4">Enter API Key (REQUIRED_API_KEY from config file)</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="client-config-item">
+                    <h4><i class="fas fa-terminal"></i> Cline / Continue</h4>
+                    <div class="config-steps">
+                        <ol>
+                            <li data-i18n="guide.client.cline.step1">Open VS Code Settings</li>
+                            <li data-i18n="guide.client.cline.step2">Search for Cline or Continue configuration</li>
+                            <li data-i18n="guide.client.cline.step3">Set API Base URL to: <code>http://localhost:3000/{provider}/v1</code></li>
+                            <li data-i18n="guide.client.cline.step4">Enter API Key and model name</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="client-config-item">
+                    <h4><i class="fas fa-code"></i> Generic cURL Call</h4>
+                    <div class="config-steps">
+                        <pre><code>curl http://localhost:3000/{provider}/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "Model Name",
+    "messages": [{"role": "user", "content": "Hello!"}],
+    "max_tokens": 1000
+  }'</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-note">
+                <i class="fas fa-lightbulb"></i>
+                <span data-i18n="guide.client.note">Tip: Replace {provider} with the actual provider path, e.g. gemini-cli-oauth, claude-kiro-oauth. See the dashboard routing examples for complete paths.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="guide-panel">
+        <h3><i class="fas fa-question-circle"></i> <span data-i18n="guide.faq.title">FAQ</span></h3>
+        <div class="guide-content">
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q1">Q: What to do when request returns 404 Error?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a1">A: Check if the API path is correct. Some clients automatically append paths to the base URL, causing path duplication. Check the actual request URL in the console and remove the extra path portion.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q2">Q: What to do when request returns 429 Error?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a2">A: 429 indicates too many requests. Configure multiple accounts in the provider pool and enable round-robin; or configure a fallback chain for cross-type degradation.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q3">Q: What to do when OAuth Authorization Failed?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a3">A: Ensure the OAuth callback port is accessible (Gemini: 8085, Antigravity: 8086, Kiro: 19876-19880). Docker users must ensure these ports are correctly mapped.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q5">Q: What to do when streaming response is interrupted?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a5">A: Check network stability, increase client request timeout. If using a proxy, ensure the proxy supports long connections.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q6">Q: What to do when request returns "No available and healthy providers" Error?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a6">A: This means all providers of the corresponding type are unavailable. Check provider health status on the "Provider Pool" page, confirm OAuth credentials have not expired, or configure a fallback chain for automatic failover to backup providers.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q7">Q: What to do when request returns 403 Forbidden Error?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a7">A: 403 indicates access denied. First check node status on the "Provider Pool" page. If node health check is normal, this error can be ignored. Other possible causes include: insufficient account permissions, restricted API key access, regional access restrictions, expired credentials, etc.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q8">Q: Why should I enable "Enable OAuth Token Auto Refresh"?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a8">A: OAuth tokens typically have a validity period (e.g., 1 hour). When enabled, the system automatically refreshes tokens about to expire in the background, ensuring 24/7 stable service and preventing request failures due to token expiration.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" data-i18n="guide.faq.q9">Q: What impact does not enabling "Pre-load Model Provider" have on token maintenance?</div>
+                    <div class="faq-answer" data-i18n="guide.faq.a9">A: The system only performs automatic refresh for pre-loaded providers. If a provider is not pre-loaded, its tokens will not be automatically refreshed in the background, and prolonged disuse may cause token expiration. Add commonly used providers to the pre-load list.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

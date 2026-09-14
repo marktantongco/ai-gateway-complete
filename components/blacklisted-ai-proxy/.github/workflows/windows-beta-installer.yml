@@ -1,0 +1,126 @@
+name: Package Beta Windows Installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      prerelease_tag:
+        description: 'Pre-release tag (e.g., beta.1, rc.1, alpha.1)'
+        required: true
+        default: 'beta.1'
+
+concurrency:
+  group: windows-packaging
+  cancel-in-progress: false
+
+jobs:
+  package-beta-installer:
+    name: Build Beta Installer (Windows x64)
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Setup Go 1.22
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Install Inno Setup
+        shell: powershell
+        run: |
+          choco install -y innosetup --version=6.3.3
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "Installing Inno Setup via direct download..."
+            Invoke-WebRequest -Uri "https://files.jrsoftware.org/is/6/innosetup-6.3.3.exe" -OutFile "$env:TEMP\innosetup.exe"
+            & "$env:TEMP\innosetup.exe" /SILENT /SUPPRESSMSGBOXES /SP-
+            Start-Sleep -Seconds 15
+          }
+
+      - name: Build with local script
+        shell: cmd
+        run: |
+          REM Read version
+          for /f "delims=" %%A in (VERSION) do set VERSION=%%A
+          set FULL_VERSION=%VERSION%-${{ github.event.inputs.prerelease_tag }}
+          
+          REM Create output directory
+          if not exist Output mkdir Output
+          
+          REM Install npm deps
+          echo Preparing build...
+          call npm ci --no-optional --silent
+          
+          REM Build tls-sidecar
+          echo Building tls-sidecar...
+          cd tls-sidecar
+          call go mod download
+          set CGO_ENABLED=0
+          set GOOS=windows
+          set GOARCH=amd64
+          call go build -ldflags="-s -w" -o tls-sidecar.exe .
+          if errorlevel 1 exit /b 1
+          cd ..
+          copy tls-sidecar\tls-sidecar.exe tls-sidecar.exe
+          
+          REM Compile installer
+          echo Compiling installer...
+          "C:\Program Files (x86)\Inno Setup 6\iscc.exe" /D"AppVersion=%FULL_VERSION%" /D"AppVersionNumeric=%VERSION%.1" installer\BlacklistedProxy.iss
+          if errorlevel 1 exit /b 1
+          
+          set INSTALLER=Output\BlacklistedAIProxy-Setup-%FULL_VERSION%-win-x64.exe
+          if not exist "%INSTALLER%" exit /b 1
+          
+          echo Installer created: %INSTALLER%
+          echo VERSION=%VERSION% >> %GITHUB_OUTPUT%
+          echo FULL_VERSION=%FULL_VERSION% >> %GITHUB_OUTPUT%
+          echo INSTALLER=%INSTALLER% >> %GITHUB_OUTPUT%
+
+      - name: Test installer
+        shell: powershell
+        run: |
+          $installer = Get-ChildItem "Output\*.exe" | Select-Object -First 1
+          if (-not $installer) { throw "Installer not found" }
+          
+          $testDir = "$env:TEMP\test-install"
+          if (Test-Path $testDir) { Remove-Item $testDir -Recurse -Force }
+          
+          & $installer.FullName /SILENT /NORESTART /DIR="$testDir" /COMPONENTS="app"
+          Start-Sleep -Seconds 3
+          
+          if (Test-Path "$testDir\src\core\master.js") {
+            Write-Host "✓ Smoke test passed"
+          } else {
+            throw "Smoke test failed"
+          }
+
+      - name: Create Release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.event.inputs.prerelease_tag }}
+          release_name: BlacklistedAIProxy ${{ github.event.inputs.prerelease_tag }}
+          body: |
+            ## Pre-Release Build
+            Beta installer for testing. See GitHub for installation instructions.
+          draft: false
+          prerelease: true
+
+      - name: Upload Installer
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: Output/BlacklistedAIProxy-Setup-*-win-x64.exe
+          asset_name: BlacklistedAIProxy-Setup-beta-win-x64.exe
+          asset_content_type: application/vnd.microsoft.portable-executable

@@ -1,0 +1,13 @@
+[Unit]
+Description=GrokBuild Proxy
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/x3/workspace/ai-gateway-complete/components/grokbuild-proxy
+ExecStart=/usr/bin/go run .
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

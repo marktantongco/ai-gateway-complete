@@ -1,0 +1,57 @@
+# Binaries
+/bin/
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/tmp/
+/grokbuild-proxy
+
+# Test / coverage
+*.test
+*.out
+coverage.*
+*.coverprofile
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Go workspace (local)
+go.work
+go.work.sum
+
+# Config & secrets (keep example)
+config.yaml
+config.yml
+*.local.yaml
+.env
+.env.*
+!.env.example
+
+# Runtime data
+/data/*
+!/data/.gitkeep
+
+# Local source/reference bundles used during credential-import development
+/grok2api-sso-to-grokbuild.zip
+/grok_reg-share-*.zip
+/grok_reg-share-*/
+
+# IDE / OS
+.idea/
+.vscode/
+.ccg/
+.claude/
+.cursor/
+.jj/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

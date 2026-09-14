@@ -1,0 +1,14 @@
+{
+    "enabled": true,
+    "models": [
+        "gemini-3-flash-preview",
+        "claude-opus-4-5",
+        "qwen3-coder-plus"
+    ],
+    "synthesisMode": "best",
+    "timeoutMs": 15000,
+    "minResponses": 1,
+    "judgeModel": "gemini-3-flash-preview",
+    "allowClientOverride": true,
+    "logRequests": true
+}

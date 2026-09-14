@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  turnstile-solver:
+    build: components/turnstile-solver/docker
+    container_name: turnstile-solver
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./components/turnstile-solver/proxies.txt:/app/proxies.txt:ro
+    environment:
+      - SOLVER_PORT=8088
+      - SOLVER_SECRET=turnstile123
+      - MAX_ATTEMPTS=3
+      - CAPTCHA_TIMEOUT=30
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2"
+    healthcheck:
+      test: ["CMD", "curl", "-H", "secret: turnstile123", "http://localhost:8088/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  grokbuild-proxy:
+    build: components/grokbuild-proxy
+    container_name: grokbuild-proxy
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./components/grokbuild-proxy/data:/app/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  blacklisted-ai-proxy:
+    build: components/blacklisted-ai-proxy
+    container_name: blacklisted-ai-proxy
+    ports:
+      - "3005:3005"
+    depends_on:
+      - grokbuild-proxy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3005/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  default:
+    name: ai-gateway-network

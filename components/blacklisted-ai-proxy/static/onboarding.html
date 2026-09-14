@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlacklistedAIProxy — Onboarding</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+           background: #0a0a1a; color: #e0e0e0; padding: 24px; max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 20px; margin-bottom: 8px; color: #fff; }
+    h2 { font-size: 15px; margin: 20px 0 10px; color: #8888ff; border-bottom: 1px solid #222; padding-bottom: 6px; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+    label { display: block; font-size: 13px; color: #aaa; margin-bottom: 4px; }
+    textarea, input[type="text"] { width: 100%; padding: 10px; border: 1px solid #333;
+      border-radius: 6px; background: #111; color: #fff; font-family: monospace;
+      font-size: 12px; resize: vertical; }
+    textarea { height: 120px; }
+    button { padding: 10px 20px; border: none; border-radius: 6px;
+      background: #1a1a4e; color: #fff; font-size: 13px; cursor: pointer; margin-top: 8px; }
+    button:hover { background: #2a2a6e; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .status { margin-top: 10px; font-size: 12px; padding: 8px; border-radius: 4px; }
+    .status.success { background: #0a2a0a; color: #2ecc71; }
+    .status.error { background: #2a0a0a; color: #e74c3c; }
+    .status.info { background: #0a0a2a; color: #88f; }
+    .steps { font-size: 13px; line-height: 1.6; color: #bbb; }
+    .steps li { margin-bottom: 4px; }
+    code { background: #1a1a2e; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+    .ext-link { color: #8888ff; text-decoration: none; }
+    .ext-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>BlacklistedAIProxy Onboarding</h1>
+  <p class="subtitle">Import Grok/X session cookies and configure providers</p>
+
+  <h2>1. Browser Extension (Recommended)</h2>
+  <ol class="steps">
+    <li>Load the <code>extensions/cookie-export/</code> folder as an unpacked extension in Chrome</li>
+    <li>Navigate to <a class="ext-link" href="https://grok.com" target="_blank">grok.com</a> and log in</li>
+    <li>Click the extension icon → "Export Session"</li>
+    <li>Paste the clipboard contents below</li>
+  </ol>
+
+  <h2>2. Import Session</h2>
+  <label for="session-json">Paste exported JSON:</label>
+  <textarea id="session-json" placeholder='{"GROK_COOKIE_TOKEN":"...","GROK_CF_CLEARANCE":"...","GROK_USER_AGENT":"..."}'></textarea>
+  <button id="import-btn" onclick="importSession()">Import Session</button>
+  <div id="import-status" class="status" style="display:none"></div>
+
+  <h2>3. Manual Cookie Entry</h2>
+  <label for="sso-token">GROK_COOKIE_TOKEN (sso value):</label>
+  <input type="text" id="sso-token" placeholder="sso cookie value from grok.com">
+  <label for="cf-clearance" style="margin-top:8px">GROK_CF_CLEARANCE:</label>
+  <input type="text" id="cf-clearance" placeholder="cf_clearance cookie value">
+  <button onclick="importManual()" style="margin-top:8px">Save Cookies</button>
+  <div id="manual-status" class="status" style="display:none"></div>
+
+  <h2>4. Restart Required</h2>
+  <p class="steps">After importing, restart the proxy for changes to take effect:<br>
+  <code>sudo systemctl restart blacklisted-api</code></p>
+
+  <script>
+    function showStatus(id, msg, type) {
+      const el = document.getElementById(id);
+      el.style.display = 'block';
+      el.className = 'status ' + type;
+      el.textContent = msg;
+    }
+
+    async function importSession() {
+      const raw = document.getElementById('session-json').value.trim();
+      if (!raw) { showStatus('import-status', 'Paste JSON first', 'error'); return; }
+      try {
+        const body = JSON.parse(raw);
+        const res = await fetch('/api/auth/import-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showStatus('import-status', 'Imported. Restart proxy to apply.', 'success');
+        } else {
+          showStatus('import-status', data.error || 'Import failed', 'error');
+        }
+      } catch (e) {
+        showStatus('import-status', 'Invalid JSON: ' + e.message, 'error');
+      }
+    }
+
+    async function importManual() {
+      const sso = document.getElementById('sso-token').value.trim();
+      const cf = document.getElementById('cf-clearance').value.trim();
+      if (!sso && !cf) { showStatus('manual-status', 'Enter at least one value', 'error'); return; }
+      const body = { GROK_COOKIE_TOKEN: sso, GROK_CF_CLEARANCE: cf };
+      try {
+        const res = await fetch('/api/auth/import-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showStatus('manual-status', 'Saved. Restart proxy to apply.', 'success');
+        } else {
+          showStatus('manual-status', data.error || 'Save failed', 'error');
+        }
+      } catch (e) {
+        showStatus('manual-status', 'Error: ' + e.message, 'error');
+      }
+    }
+  </script>
+</body>
+</html>

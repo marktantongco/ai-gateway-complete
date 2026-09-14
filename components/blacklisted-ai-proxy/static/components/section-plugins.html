@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="components/section-plugins.css">
+<!-- Plugins Section -->
+<section id="plugins" class="section" aria-labelledby="plugins-title">
+    <h2 id="plugins-title" data-i18n="plugins.title">Plugin Management</h2>
+    <div class="plugins-panel">
+        <div class="plugins-description">
+            <div class="highlight-note">
+                <i class="fas fa-info-circle"></i>
+                <span data-i18n="plugins.description">The plugin system allows you to extend system functionality. Enabling or disabling plugins requires a service restart to take effect</span>
+            </div>
+        </div>
+        
+        <!-- Plugin Statistics -->
+        <div class="stats-grid plugins-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-puzzle-piece"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalPlugins">0</h3>
+                    <p data-i18n="plugins.stats.total">Total Plugins</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="enabledPlugins">0</h3>
+                    <p data-i18n="plugins.stats.enabled">Enabled</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="disabledPlugins">0</h3>
+                    <p data-i18n="plugins.stats.disabled">Disabled</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Plugin Actions Buttons -->
+        <div class="plugins-controls">
+            <button class="btn btn-primary" id="refreshPluginsBtn" aria-label="Refresh Plugins" data-i18n-aria-label="plugins.refresh">
+                <i class="fas fa-sync-alt"></i> <span data-i18n="plugins.refresh">Refresh Plugin List</span>
+            </button>
+        </div>
+        
+        <!-- Plugin Loading Status -->
+        <div class="plugins-loading" id="pluginsLoading" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i> <span data-i18n="plugins.loading">Loading plugin list...</span>
+        </div>
+        
+        <!-- Plugin List -->
+        <div class="plugins-list-container">
+            <div id="pluginsList" class="plugins-list">
+                <!-- Plugin list will be dynamically generated here -->
+            </div>
+            <div class="plugins-empty" id="pluginsEmpty">
+                <i class="fas fa-puzzle-piece"></i>
+                <p data-i18n="plugins.empty">No plugins installed</p>
+            </div>
+        </div>
+    </div>
+</section>

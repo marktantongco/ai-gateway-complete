@@ -1,0 +1,13 @@
+[Unit]
+Description=BlacklistedAIProxy
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/x3/workspace/ai-gateway-complete/components/blacklisted-ai-proxy
+ExecStart=/usr/bin/pnpm start
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

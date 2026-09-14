@@ -1,0 +1,15 @@
+[Unit]
+Description=Turnstile Solver Docker
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/x3/workspace/ai-gateway-complete/components/turnstile-solver
+ExecStartPre=/usr/bin/docker compose -f docker-compose.override.yml up -d
+ExecStart=/usr/bin/docker compose -f docker-compose.override.yml logs -f
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

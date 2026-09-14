@@ -1,0 +1,16 @@
+allowBuilds:
+  '@playwright/browser-chromium': true
+  '@swc/core': true
+  better-sqlite3: true
+  esbuild: true
+  onnxruntime-node: true
+  protobufjs: true
+  sharp: true
+
+# Ubuntu 26.04 (x64) needs playwright >= 1.61 for chromium platform support
+# (upstream: microsoft/playwright#40117, fixed in v1.61). promptfoo pins 1.59.1
+# transitively via playwright-extra, so force the whole family to 1.63.0.
+overrides:
+  playwright: 1.63.0
+  playwright-core: 1.63.0
+  '@playwright/browser-chromium': 1.63.0
