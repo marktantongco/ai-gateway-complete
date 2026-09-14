@@ -88,58 +88,6 @@ check_system() {
         fi
     fi
     
-    # Check Docker
-    if ! command -v docker &> /dev/null; then
-        log_error "Docker is not installed"
-        log_info "Install Docker: sudo pacman -S docker"
-        log_info "Then start: sudo systemctl enable --now docker"
-        exit 1
-    fi
-    
-    # Check Docker Compose
-    if ! docker compose version &> /dev/null; then
-        log_error "Docker Compose is not installed"
-        log_info "Install: sudo pacman -S docker-compose"
-        exit 1
-    fi
-    
-    # Check Go
-    if ! command -v go &> /dev/null; then
-        log_error "Go is not installed"
-        log_info "Install: sudo pacman -S go"
-        exit 1
-    fi
-    
-    # Check Node.js
-    if ! command -v node &> /dev/null; then
-        log_error "Node.js is not installed"
-        log_info "Install: sudo pacman -S nodejs npm"
-        exit 1
-    fi
-    
-    # Check Git
-    if ! command -v git &> /dev/null; then
-        log_error "Git is not installed"
-        log_info "Install: sudo pacman -S git"
-        exit 1
-    fi
-    
-    # Check user in docker group
-    if ! groups "$USER" | grep -q docker; then
-        log_warn "User '$USER' is not in docker group"
-        log_info "Add user to docker group: sudo usermod -aG docker $USER"
-        log_info "Then logout and login again"
-        
-        if confirm "Continue anyway?"; then
-            log_warn "Using sudo for Docker commands"
-            DOCKER_CMD="sudo docker"
-        else
-            exit 1
-        fi
-    else
-        DOCKER_CMD="docker"
-    fi
-    
     # Check available disk space
     local available_gb
     available_gb=$(df -BG "$HOME" | awk 'NR==2 {print $4}' | tr -d 'G')
@@ -181,6 +129,18 @@ install_dependencies() {
     if ! systemctl is-active docker &> /dev/null; then
         log_info "Enabling Docker service..."
         sudo systemctl enable --now docker
+    fi
+    
+    # Check user in docker group and set DOCKER_CMD
+    if ! groups "$USER" | grep -q docker; then
+        log_warn "User '$USER' is not in docker group"
+        log_info "Adding user to docker group..."
+        sudo usermod -aG docker "$USER"
+        log_warn "Please logout and login again for group changes to take effect"
+        log_warn "Using sudo for Docker commands for now"
+        DOCKER_CMD="sudo docker"
+    else
+        DOCKER_CMD="docker"
     fi
     
     log_info "Dependencies installed ✓"
