@@ -45,14 +45,33 @@
 
 ---
 
-## ⚡ Quick Start (One Command)
+## ⚡ Quick Start
+
+### Clone and Start
 
 ```bash
-# Clone and start everything
+# Clone the repository
 git clone https://github.com/marktantongco/ai-gateway-complete.git
 cd ai-gateway-complete
+
+# Start all services
 ./scripts/start-all.sh
 ```
+
+### Verify Installation
+
+```bash
+# Check all services are running
+./scripts/health-check.sh
+```
+
+### Access Services
+
+| Service | URL | Description |
+|---------|-----|-------------|
+| **BlacklistedAIProxy** | http://localhost:3005 | Web UI + Chat |
+| **GrokBuild Proxy** | http://localhost:8090 | API Endpoint |
+| **Turnstile Solver** | http://localhost:8088 | Health Check |
 
 ---
 
@@ -125,6 +144,71 @@ cd ai-gateway-complete
 | **GrokBuild Proxy** | Go | 8090 | Grok API proxy + multi-account |
 | **Turnstile Solver** | Python | 8088 | Cloudflare Turnstile solver |
 | **Grok Register** | Python | - | Account registration + OAuth |
+
+---
+
+## 🔗 Ecosystem Repositories
+
+### Core Stack
+
+| Repository | Description | Status |
+|------------|-------------|--------|
+| [ai-gateway-complete](https://github.com/marktantongco/ai-gateway-complete) | Full-stack combined repo | ✅ Active |
+| [ai-gateway-stack](https://github.com/marktantongco/ai-gateway-stack) | Meta-repo linking all components | ✅ Active |
+
+### Individual Components
+
+| Repository | Language | Description | Stars |
+|------------|----------|-------------|-------|
+| [blacklisted-ai-proxy](https://github.com/marktantongco/blacklisted-ai-proxy) | Node.js | Web UI + API gateway | ⭐ |
+| [grokbuild-proxy](https://github.com/marktantongco/grokbuild-proxy) | Go | Grok API proxy + multi-account | ⭐ |
+| [turnstile-solver](https://github.com/marktantongco/turnstile-solver) | Python | Cloudflare Turnstile solver | ⭐ |
+| [grok-register](https://github.com/marktantongco/grok-register) | Python | Account registration + OAuth | ⭐ |
+
+### Infrastructure
+
+| Repository | Language | Description | Stars |
+|------------|----------|-------------|-------|
+| [thermoptic](https://github.com/marktantongco/thermoptic) | Python | Shared egress proxy (MITM) | ⭐ |
+| [phantomsignal](https://github.com/marktantongco/phantomsignal) | Python | Analytics + monitoring | ⭐ |
+| [workstation-backup](https://github.com/marktantongco/workstation-backup) | Shell | Full ecosystem backup | ⭐ |
+
+---
+
+## 🌳 Worktree Structure
+
+```
+/home/x3/workspace/
+├── ai-gateway-complete/          # Main combined repo
+│   ├── components/
+│   │   ├── blacklisted-ai-proxy/
+│   │   ├── grokbuild-proxy/
+│   │   ├── turnstile-solver/
+│   │   └── grok-register/
+│   ├── config/
+│   ├── scripts/
+│   └── docs/
+├── ai-gateway-stack/             # Meta-repo
+├── BlacklistedAIProxy/           # Standalone (original)
+├── grokbuild-proxy/              # Standalone (original)
+├── turnstile_solver/             # Standalone (original)
+├── grok-register/                # Standalone (original)
+├── Thermoptic/                   # Standalone
+└── workstation-backup/           # Backup repo
+```
+
+### Git Worktree Commands
+
+```bash
+# List all worktrees
+git worktree list
+
+# Add new worktree
+git worktree add ../feature-branch feature-branch
+
+# Remove worktree
+git worktree remove ../feature-branch
+```
 
 ---
 
